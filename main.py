@@ -22,10 +22,10 @@ def printpv():
 
     request_body=request.json
 
-    if request_body["link"]!=last_link:
+    if request_body["link"]==last_link:
         return "Already Printed"    
     last_link=request_body["link"]
-    
+
     printer.image("Kassenzettel-Header.png")
 
     
