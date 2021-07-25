@@ -2,6 +2,7 @@ from escpos.printer import Serial
 from flask import Flask
 from flask import request
 from flask_cors import CORS
+from news import news
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -27,13 +28,8 @@ def printpv():
     last_link=request_body["link"]
 
     printer.image("Kassenzettel-Header.png")
-
     
-    if len(request_body["news"])>0:
-        printer.text("\nAktuelle Dinge:\n")
-        for n in request_body["news"]:
-            printer.text("  * "+n+"\n")
-        printer.text("\n")
+    printer.text(news)
 
     printer.qr(request_body["link"],size=11)
     printer.text("\n"+request_body["link"]+"\n")
