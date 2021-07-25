@@ -14,10 +14,18 @@ printer = Serial(devfile='COM1',
            timeout=1.00,
            dsrdtr=True)
 
+last_link=""
+
 @app.route('/printPV', methods=["POST"])
 def printpv():
+    global last_link
+
     request_body=request.json
 
+    if request_body["link"]!=last_link:
+        return "Already Printed"    
+    last_link=request_body["link"]
+    
     printer.image("Kassenzettel-Header.png")
 
     
@@ -36,6 +44,7 @@ def printpv():
 
     printer.cut()
     return "ok"
+
 
 app.run("0.0.0.0",port=6001)
 
